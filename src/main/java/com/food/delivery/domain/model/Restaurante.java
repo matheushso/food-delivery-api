@@ -22,7 +22,6 @@ public class Restaurante {
 	private Long id;
 
 	private String nome;
-
 	private BigDecimal taxaFrete;
 
 	@ManyToOne
