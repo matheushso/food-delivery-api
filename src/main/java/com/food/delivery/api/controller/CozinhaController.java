@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,5 +21,10 @@ public class CozinhaController {
 	@GetMapping
 	private List<Cozinha> listar() {
 		return cozinhaRepository.listar();
+	}
+
+	@GetMapping("/{id}")
+	private Cozinha buscar(@PathVariable Long id) {
+		return cozinhaRepository.buscar(id);
 	}
 }
