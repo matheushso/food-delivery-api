@@ -5,7 +5,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 
 import com.food.delivery.FoodDeliveryApiApplication;
-import com.food.delivery.domain.model.Cozinha;
+import com.food.delivery.domain.model.Kitchen;
 import com.food.delivery.domain.repository.CozinhaRepository;
 
 public class ExclusaoCozinhaMain {
@@ -16,7 +16,7 @@ public class ExclusaoCozinhaMain {
 
 		CozinhaRepository cozinhaRepository = applicationContext.getBean(CozinhaRepository.class);
 
-		Cozinha cozinha = new Cozinha();
+		Kitchen cozinha = new Kitchen();
 		cozinha.setId(1L);
 
 		cozinhaRepository.remover(cozinha);

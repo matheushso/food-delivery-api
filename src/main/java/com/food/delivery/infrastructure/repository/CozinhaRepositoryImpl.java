@@ -8,7 +8,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Component;
 
-import com.food.delivery.domain.model.Cozinha;
+import com.food.delivery.domain.model.Kitchen;
 import com.food.delivery.domain.repository.CozinhaRepository;
 
 @Component
@@ -18,24 +18,24 @@ public class CozinhaRepositoryImpl implements CozinhaRepository {
 	private EntityManager manager;
 
 	@Override
-	public List<Cozinha> listar() {
-		return manager.createQuery("from Cozinha", Cozinha.class).getResultList();
+	public List<Kitchen> listar() {
+		return manager.createQuery("from Cozinha", Kitchen.class).getResultList();
 	}
 
 	@Override
-	public Cozinha buscar(Long id) {
-		return manager.find(Cozinha.class, id);
+	public Kitchen buscar(Long id) {
+		return manager.find(Kitchen.class, id);
 	}
 
 	@Transactional
 	@Override
-	public Cozinha salvar(Cozinha cozinha) {
+	public Kitchen salvar(Kitchen cozinha) {
 		return manager.merge(cozinha);
 	}
 
 	@Transactional
 	@Override
-	public void remover(Cozinha cozinha) {
+	public void remover(Kitchen cozinha) {
 		cozinha = buscar(cozinha.getId());
 		manager.remove(cozinha);
 	}

@@ -5,7 +5,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 
 import com.food.delivery.FoodDeliveryApiApplication;
-import com.food.delivery.domain.model.Cozinha;
+import com.food.delivery.domain.model.Kitchen;
 import com.food.delivery.domain.repository.CozinhaRepository;
 
 public class InclusaoCozinhaMain {
@@ -16,10 +16,10 @@ public class InclusaoCozinhaMain {
 
 		CozinhaRepository cozinhaRepository = applicationContext.getBean(CozinhaRepository.class);
 
-		Cozinha cozinha1 = new Cozinha();
+		Kitchen cozinha1 = new Kitchen();
 		cozinha1.setNome("Brasileira");
 
-		Cozinha cozinha2 = new Cozinha();
+		Kitchen cozinha2 = new Kitchen();
 		cozinha2.setNome("Japonesa");
 
 		cozinha1 = cozinhaRepository.salvar(cozinha1);

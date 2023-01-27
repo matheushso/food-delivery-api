@@ -7,7 +7,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 
 import com.food.delivery.FoodDeliveryApiApplication;
-import com.food.delivery.domain.model.Cozinha;
+import com.food.delivery.domain.model.Kitchen;
 import com.food.delivery.domain.repository.CozinhaRepository;
 
 public class ConsultaCozinhaMain {
@@ -18,9 +18,9 @@ public class ConsultaCozinhaMain {
 
 		CozinhaRepository cozinhaRepository = applicationContext.getBean(CozinhaRepository.class);
 
-		List<Cozinha> todasCozinhas = cozinhaRepository.listar();
+		List<Kitchen> todasCozinhas = cozinhaRepository.listar();
 
-		for (Cozinha cozinha : todasCozinhas) {
+		for (Kitchen cozinha : todasCozinhas) {
 			System.out.println(cozinha.getNome());
 		}
 	}

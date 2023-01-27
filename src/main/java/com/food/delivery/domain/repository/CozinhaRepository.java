@@ -4,16 +4,16 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.food.delivery.domain.model.Cozinha;
+import com.food.delivery.domain.model.Kitchen;
 
 @Component
 public interface CozinhaRepository {
 
-	List<Cozinha> listar();
+	List<Kitchen> listar();
 
-	Cozinha buscar(Long id);
+	Kitchen buscar(Long id);
 
-	Cozinha salvar(Cozinha cozinha);
+	Kitchen salvar(Kitchen cozinha);
 
-	void remover(Cozinha cozinha);
+	void remover(Kitchen cozinha);
 }

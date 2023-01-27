@@ -5,7 +5,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 
 import com.food.delivery.FoodDeliveryApiApplication;
-import com.food.delivery.domain.model.Cozinha;
+import com.food.delivery.domain.model.Kitchen;
 import com.food.delivery.domain.repository.CozinhaRepository;
 
 public class BuscaCozinhaMain {
@@ -16,7 +16,7 @@ public class BuscaCozinhaMain {
 
 		CozinhaRepository cozinhaRepository = applicationContext.getBean(CozinhaRepository.class);
 
-		Cozinha cozinha = cozinhaRepository.buscar(2L);
+		Kitchen cozinha = cozinhaRepository.buscar(2L);
 
 		System.out.println(cozinha.getNome());
 	}
