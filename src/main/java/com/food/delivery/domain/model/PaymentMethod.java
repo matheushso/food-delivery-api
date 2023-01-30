@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-public class FormaPagamento {
+public class PaymentMethod {
 
 	@EqualsAndHashCode.Include
 	@Id
