@@ -19,25 +19,29 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.food.delivery.domain.model.Kitchen;
 import com.food.delivery.domain.repository.KitchenRepository;
+import com.food.delivery.domain.service.KitchenService;
 
 @RestController
-@RequestMapping("/cozinhas")
+@RequestMapping("/kitchens")
 public class KitchenController {
 
 	@Autowired
-	private KitchenRepository cozinhaRepository;
+	private KitchenRepository kitchenRepository;
+
+	@Autowired
+	private KitchenService kitchenService;
 
 	@GetMapping
 	private List<Kitchen> listar() {
-		return cozinhaRepository.listar();
+		return kitchenRepository.listar();
 	}
 
 	@GetMapping("/{id}")
 	private ResponseEntity<Kitchen> buscar(@PathVariable Long id) {
-		Kitchen cozinha = cozinhaRepository.buscar(id);
+		Kitchen kitchen = kitchenRepository.buscar(id);
 
-		if (cozinha != null) {
-			return ResponseEntity.ok(cozinha);
+		if (kitchen != null) {
+			return ResponseEntity.ok(kitchen);
 		}
 
 		return ResponseEntity.notFound().build();
@@ -45,19 +49,19 @@ public class KitchenController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	private Kitchen adicionar(@RequestBody Kitchen cozinha) {
-		return cozinhaRepository.salvar(cozinha);
+	private Kitchen adicionar(@RequestBody Kitchen kitchen) {
+		return kitchenService.save(kitchen);
 	}
 
 	@PutMapping("/{id}")
-	private ResponseEntity<Kitchen> atualizar(@PathVariable Long id, @RequestBody Kitchen cozinha) {
-		Kitchen cozinhaAtualizar = cozinhaRepository.buscar(id);
+	private ResponseEntity<Kitchen> atualizar(@PathVariable Long id, @RequestBody Kitchen kitchen) {
+		Kitchen kitchenAtualizar = kitchenRepository.buscar(id);
 
-		if (cozinhaAtualizar != null) {
-			BeanUtils.copyProperties(cozinha, cozinhaAtualizar, "id");
+		if (kitchenAtualizar != null) {
+			BeanUtils.copyProperties(kitchen, kitchenAtualizar, "id");
 
-			cozinhaAtualizar = cozinhaRepository.salvar(cozinhaAtualizar);
-			return ResponseEntity.ok(cozinhaAtualizar);
+			kitchenAtualizar = kitchenRepository.salvar(kitchenAtualizar);
+			return ResponseEntity.ok(kitchenAtualizar);
 		}
 
 		return ResponseEntity.notFound().build();
@@ -66,10 +70,10 @@ public class KitchenController {
 	@DeleteMapping("{id}")
 	private ResponseEntity<Kitchen> remover(@PathVariable Long id) {
 		try {
-			Kitchen cozinha = cozinhaRepository.buscar(id);
+			Kitchen kitchen = kitchenRepository.buscar(id);
 
-			if (cozinha != null) {
-				cozinhaRepository.remover(cozinha);
+			if (kitchen != null) {
+				kitchenRepository.remover(kitchen);
 				return ResponseEntity.noContent().build();
 			} else {
 				return ResponseEntity.notFound().build();
