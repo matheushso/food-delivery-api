@@ -8,34 +8,34 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Component;
 
-import com.food.delivery.domain.model.Estado;
-import com.food.delivery.domain.repository.EstadoRepository;
+import com.food.delivery.domain.model.State;
+import com.food.delivery.domain.repository.StateRepository;
 
 @Component
-public class EstadoRepositoryImpl implements EstadoRepository {
+public class EstadoRepositoryImpl implements StateRepository {
 
 	@PersistenceContext
 	private EntityManager manager;
 
 	@Override
-	public List<Estado> listar() {
-		return manager.createQuery("from Estado", Estado.class).getResultList();
+	public List<State> listar() {
+		return manager.createQuery("from Estado", State.class).getResultList();
 	}
 
 	@Override
-	public Estado buscar(Long id) {
-		return manager.find(Estado.class, id);
+	public State buscar(Long id) {
+		return manager.find(State.class, id);
 	}
 
 	@Transactional
 	@Override
-	public Estado salvar(Estado estado) {
+	public State salvar(State estado) {
 		return manager.merge(estado);
 	}
 
 	@Transactional
 	@Override
-	public void remover(Estado estado) {
+	public void remover(State estado) {
 		estado = buscar(estado.getId());
 		manager.remove(estado);
 	}

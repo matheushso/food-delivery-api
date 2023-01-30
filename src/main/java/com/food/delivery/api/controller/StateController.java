@@ -7,18 +7,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.food.delivery.domain.model.Estado;
-import com.food.delivery.domain.repository.EstadoRepository;
+import com.food.delivery.domain.model.State;
+import com.food.delivery.domain.repository.StateRepository;
 
 @RestController
 @RequestMapping("/estados")
-public class EstadoController {
+public class StateController {
 
 	@Autowired
-	private EstadoRepository estadoRepository;
+	private StateRepository estadoRepository;
 
 	@GetMapping
-	private List<Estado> listar() {
+	private List<State> listar() {
 		return estadoRepository.listar();
 	}
 }

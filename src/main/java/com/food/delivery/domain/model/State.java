@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-public class Estado {
+public class State {
 
 	@EqualsAndHashCode.Include
 	@Id
