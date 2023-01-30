@@ -22,7 +22,7 @@ import com.food.delivery.domain.repository.KitchenRepository;
 
 @RestController
 @RequestMapping("/cozinhas")
-public class CozinhaController {
+public class KitchenController {
 
 	@Autowired
 	private KitchenRepository cozinhaRepository;
