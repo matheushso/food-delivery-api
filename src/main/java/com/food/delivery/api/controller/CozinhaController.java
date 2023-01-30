@@ -18,14 +18,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.food.delivery.domain.model.Kitchen;
-import com.food.delivery.domain.repository.CozinhaRepository;
+import com.food.delivery.domain.repository.KitchenRepository;
 
 @RestController
 @RequestMapping("/cozinhas")
 public class CozinhaController {
 
 	@Autowired
-	private CozinhaRepository cozinhaRepository;
+	private KitchenRepository cozinhaRepository;
 
 	@GetMapping
 	private List<Kitchen> listar() {

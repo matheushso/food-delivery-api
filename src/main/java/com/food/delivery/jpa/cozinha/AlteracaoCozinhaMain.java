@@ -6,7 +6,7 @@ import org.springframework.context.ApplicationContext;
 
 import com.food.delivery.FoodDeliveryApiApplication;
 import com.food.delivery.domain.model.Kitchen;
-import com.food.delivery.domain.repository.CozinhaRepository;
+import com.food.delivery.domain.repository.KitchenRepository;
 
 public class AlteracaoCozinhaMain {
 
@@ -14,7 +14,7 @@ public class AlteracaoCozinhaMain {
 		ApplicationContext applicationContext = new SpringApplicationBuilder(FoodDeliveryApiApplication.class)
 				.web(WebApplicationType.NONE).run(args);
 
-		CozinhaRepository cozinhaRepository = applicationContext.getBean(CozinhaRepository.class);
+		KitchenRepository cozinhaRepository = applicationContext.getBean(KitchenRepository.class);
 
 		Kitchen cozinha = new Kitchen();
 		cozinha.setId(1L);

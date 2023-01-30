@@ -9,10 +9,10 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Component;
 
 import com.food.delivery.domain.model.Kitchen;
-import com.food.delivery.domain.repository.CozinhaRepository;
+import com.food.delivery.domain.repository.KitchenRepository;
 
 @Component
-public class CozinhaRepositoryImpl implements CozinhaRepository {
+public class CozinhaRepositoryImpl implements KitchenRepository {
 
 	@PersistenceContext
 	private EntityManager manager;

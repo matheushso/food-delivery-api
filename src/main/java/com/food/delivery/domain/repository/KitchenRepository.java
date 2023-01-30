@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import com.food.delivery.domain.model.Kitchen;
 
 @Component
-public interface CozinhaRepository {
+public interface KitchenRepository {
 
 	List<Kitchen> listar();
 
