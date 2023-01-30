@@ -8,34 +8,34 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Component;
 
-import com.food.delivery.domain.model.Restaurante;
-import com.food.delivery.domain.repository.RestauranteRepository;
+import com.food.delivery.domain.model.Restaurant;
+import com.food.delivery.domain.repository.RestaurantRepository;
 
 @Component
-public class RestauranteRepositoryImpl implements RestauranteRepository {
+public class RestauranteRepositoryImpl implements RestaurantRepository {
 
 	@PersistenceContext
 	private EntityManager manager;
 
 	@Override
-	public List<Restaurante> listar() {
-		return manager.createQuery("from Restaurante", Restaurante.class).getResultList();
+	public List<Restaurant> listar() {
+		return manager.createQuery("from Restaurante", Restaurant.class).getResultList();
 	}
 
 	@Override
-	public Restaurante buscar(Long id) {
-		return manager.find(Restaurante.class, id);
+	public Restaurant buscar(Long id) {
+		return manager.find(Restaurant.class, id);
 	}
 
 	@Transactional
 	@Override
-	public Restaurante salvar(Restaurante restaurante) {
+	public Restaurant salvar(Restaurant restaurante) {
 		return manager.merge(restaurante);
 	}
 
 	@Transactional
 	@Override
-	public void remover(Restaurante restaurante) {
+	public void remover(Restaurant restaurante) {
 		restaurante = buscar(restaurante.getId());
 		manager.remove(restaurante);
 	}

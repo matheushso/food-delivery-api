@@ -5,15 +5,15 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import com.food.delivery.domain.model.Restaurante;
+import com.food.delivery.domain.model.Restaurant;
 
 public class CadastroRestaurante {
 
 	@PersistenceContext
 	private EntityManager manager;
 
-	public List<Restaurante> listarCozinha() {
-		return manager.createQuery("from Restaurante", Restaurante.class).getResultList();
+	public List<Restaurant> listarCozinha() {
+		return manager.createQuery("from Restaurante", Restaurant.class).getResultList();
 	}
 
 }

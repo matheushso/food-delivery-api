@@ -7,8 +7,8 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 
 import com.food.delivery.FoodDeliveryApiApplication;
-import com.food.delivery.domain.model.Restaurante;
-import com.food.delivery.domain.repository.RestauranteRepository;
+import com.food.delivery.domain.model.Restaurant;
+import com.food.delivery.domain.repository.RestaurantRepository;
 
 public class InclusaoRestauranteMain {
 
@@ -16,13 +16,13 @@ public class InclusaoRestauranteMain {
 		ApplicationContext applicationContext = new SpringApplicationBuilder(FoodDeliveryApiApplication.class)
 				.web(WebApplicationType.NONE).run(args);
 
-		RestauranteRepository restauranteRepository = applicationContext.getBean(RestauranteRepository.class);
+		RestaurantRepository restauranteRepository = applicationContext.getBean(RestaurantRepository.class);
 
-		Restaurante restaurante1 = new Restaurante();
+		Restaurant restaurante1 = new Restaurant();
 		restaurante1.setNome("King Esfiharia");
 		restaurante1.setTaxaFrete(BigDecimal.valueOf(9.0));
 
-		Restaurante restaurante2 = new Restaurante();
+		Restaurant restaurante2 = new Restaurant();
 		restaurante2.setNome("Taqueria Mexicana");
 		restaurante2.setTaxaFrete(BigDecimal.valueOf(7.0));
 

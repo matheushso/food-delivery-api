@@ -7,8 +7,8 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 
 import com.food.delivery.FoodDeliveryApiApplication;
-import com.food.delivery.domain.model.Restaurante;
-import com.food.delivery.domain.repository.RestauranteRepository;
+import com.food.delivery.domain.model.Restaurant;
+import com.food.delivery.domain.repository.RestaurantRepository;
 
 public class ConsultaRestauranteMain {
 
@@ -16,11 +16,11 @@ public class ConsultaRestauranteMain {
 		ApplicationContext applicationContext = new SpringApplicationBuilder(FoodDeliveryApiApplication.class)
 				.web(WebApplicationType.NONE).run(args);
 
-		RestauranteRepository restauranteaRepository = applicationContext.getBean(RestauranteRepository.class);
+		RestaurantRepository restauranteaRepository = applicationContext.getBean(RestaurantRepository.class);
 
-		List<Restaurante> todosRestaurantes = restauranteaRepository.listar();
+		List<Restaurant> todosRestaurantes = restauranteaRepository.listar();
 
-		for (Restaurante restaurante : todosRestaurantes) {
+		for (Restaurant restaurante : todosRestaurantes) {
 			System.out.printf("Nome: %s | Taxa frete: %.2f | Nome cozinha: %s \n", restaurante.getNome(),
 					restaurante.getTaxaFrete(), restaurante.getCozinha().getNome());
 		}

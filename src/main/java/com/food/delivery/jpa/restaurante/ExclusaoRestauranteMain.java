@@ -5,8 +5,8 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 
 import com.food.delivery.FoodDeliveryApiApplication;
-import com.food.delivery.domain.model.Restaurante;
-import com.food.delivery.domain.repository.RestauranteRepository;
+import com.food.delivery.domain.model.Restaurant;
+import com.food.delivery.domain.repository.RestaurantRepository;
 
 public class ExclusaoRestauranteMain {
 
@@ -14,9 +14,9 @@ public class ExclusaoRestauranteMain {
 		ApplicationContext applicationContext = new SpringApplicationBuilder(FoodDeliveryApiApplication.class)
 				.web(WebApplicationType.NONE).run(args);
 
-		RestauranteRepository restauranteRepository = applicationContext.getBean(RestauranteRepository.class);
+		RestaurantRepository restauranteRepository = applicationContext.getBean(RestaurantRepository.class);
 
-		Restaurante restaurante = new Restaurante();
+		Restaurant restaurante = new Restaurant();
 		restaurante.setId(1L);
 
 		restauranteRepository.remover(restaurante);
