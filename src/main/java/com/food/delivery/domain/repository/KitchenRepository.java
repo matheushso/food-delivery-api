@@ -15,5 +15,5 @@ public interface KitchenRepository {
 
 	Kitchen salvar(Kitchen cozinha);
 
-	void remover(Kitchen cozinha);
+	void delete(Long id);
 }
