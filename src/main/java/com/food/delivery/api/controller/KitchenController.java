@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.food.delivery.domain.exception.EntityInUseException;
+import com.food.delivery.domain.exception.EntityNotFoundException;
 import com.food.delivery.domain.model.Kitchen;
 import com.food.delivery.domain.repository.KitchenRepository;
 import com.food.delivery.domain.service.KitchenService;
@@ -70,15 +71,13 @@ public class KitchenController {
 	@DeleteMapping("{id}")
 	private ResponseEntity<Kitchen> remover(@PathVariable Long id) {
 		try {
-			Kitchen kitchen = kitchenRepository.buscar(id);
+			kitchenService.delete(id);
+			return ResponseEntity.noContent().build();
 
-			if (kitchen != null) {
-				kitchenRepository.remover(kitchen);
-				return ResponseEntity.noContent().build();
-			} else {
-				return ResponseEntity.notFound().build();
-			}
-		} catch (DataIntegrityViolationException e) {
+		} catch (EntityNotFoundException e) {
+			return ResponseEntity.notFound().build();
+
+		} catch (EntityInUseException e) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).build();
 		}
 
