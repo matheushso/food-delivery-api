@@ -6,13 +6,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 
 import com.food.delivery.domain.model.Kitchen;
 import com.food.delivery.domain.repository.KitchenRepository;
 
 @Component
-public class CozinhaRepositoryImpl implements KitchenRepository {
+public class KitchenRepositoryImpl implements KitchenRepository {
 
 	@PersistenceContext
 	private EntityManager manager;
@@ -35,8 +36,13 @@ public class CozinhaRepositoryImpl implements KitchenRepository {
 
 	@Transactional
 	@Override
-	public void remover(Kitchen cozinha) {
-		cozinha = buscar(cozinha.getId());
-		manager.remove(cozinha);
+	public void delete(Long id) {
+		Kitchen kitchen = buscar(id);
+
+		if (kitchen == null) {
+			throw new EmptyResultDataAccessException(1);
+		}
+
+		manager.remove(kitchen);
 	}
 }
