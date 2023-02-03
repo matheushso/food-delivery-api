@@ -25,7 +25,7 @@ public class KitchenService {
 			kitchenRepository.delete(id);
 
 		} catch (EmptyResultDataAccessException e) {
-			throw new EntityNotFoundException(String.format("No Kitchen with Id %d was found", id));
+			throw new EntityNotFoundException(String.format("No Kitchen with Id %d was found.", id));
 
 		} catch (DataIntegrityViolationException e) {
 			throw new EntityInUseException(

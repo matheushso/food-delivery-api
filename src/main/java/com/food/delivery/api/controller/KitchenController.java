@@ -61,7 +61,7 @@ public class KitchenController {
 		if (kitchenAtualizar != null) {
 			BeanUtils.copyProperties(kitchen, kitchenAtualizar, "id");
 
-			kitchenAtualizar = kitchenRepository.salvar(kitchenAtualizar);
+			kitchenAtualizar = kitchenService.save(kitchenAtualizar);
 			return ResponseEntity.ok(kitchenAtualizar);
 		}
 
