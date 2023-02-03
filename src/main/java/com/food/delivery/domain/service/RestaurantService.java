@@ -35,7 +35,7 @@ public class RestaurantService {
 	}
 
 	public Restaurant save(Restaurant restaurant) {
-		Long kitchenId = restaurant.getCozinha().getId();
+		Long kitchenId = restaurant.getKitchen().getId();
 		Kitchen kitchen = kitchenRepository.buscar(kitchenId);
 
 		if (kitchen == null) {

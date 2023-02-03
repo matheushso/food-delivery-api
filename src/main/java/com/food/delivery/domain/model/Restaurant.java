@@ -21,9 +21,9 @@ public class Restaurant {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private String nome;
-	private BigDecimal taxaFrete;
+	private String name;
+	private BigDecimal freightRate;
 
 	@ManyToOne
-	private Kitchen cozinha;
+	private Kitchen kitchen;
 }
