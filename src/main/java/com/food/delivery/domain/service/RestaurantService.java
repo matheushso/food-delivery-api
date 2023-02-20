@@ -60,6 +60,10 @@ public class RestaurantService {
 	public void delete(Long id) {
 		Restaurant restaurant = findById(id);
 
+		if (restaurant == null) {
+			throw new EntityNotFoundException(String.format("No Restaurant with Id %d was found.", id));
+		}
+
 		restaurantRepository.remover(restaurant);
 	}
 }

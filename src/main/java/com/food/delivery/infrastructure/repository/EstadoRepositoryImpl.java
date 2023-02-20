@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 
 import com.food.delivery.domain.model.State;
@@ -35,9 +36,14 @@ public class EstadoRepositoryImpl implements StateRepository {
 
 	@Transactional
 	@Override
-	public void remover(State estado) {
-		estado = buscar(estado.getId());
-		manager.remove(estado);
+	public void remover(Long id) {
+		State state = buscar(id);
+
+		if (state == null) {
+			throw new EmptyResultDataAccessException(1);
+		}
+
+		manager.remove(state);
 	}
 
 }
