@@ -35,6 +35,7 @@ public class RestaurantController {
 		try {
 			Restaurant restaurant = restaurantService.findById(id);
 			return ResponseEntity.ok(restaurant);
+
 		} catch (EntityNotFoundException e) {
 			return ResponseEntity.notFound().build();
 		}
@@ -45,6 +46,7 @@ public class RestaurantController {
 		try {
 			restaurant = restaurantService.save(restaurant);
 			return ResponseEntity.status(HttpStatus.CREATED).body(restaurant);
+
 		} catch (EntityNotFoundException e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 		}
