@@ -34,7 +34,7 @@ public class KitchenController {
 	}
 
 	@GetMapping("/{id}")
-	private ResponseEntity<Kitchen> buscar(@PathVariable Long id) {
+	private ResponseEntity<Kitchen> findById(@PathVariable Long id) {
 		try {
 			Kitchen kitchen = kitchenService.findById(id);
 			return ResponseEntity.ok(kitchen);
@@ -46,12 +46,12 @@ public class KitchenController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	private Kitchen adicionar(@RequestBody Kitchen kitchen) {
+	private Kitchen save(@RequestBody Kitchen kitchen) {
 		return kitchenService.save(kitchen);
 	}
 
 	@PutMapping("/{id}")
-	private ResponseEntity<Kitchen> atualizar(@PathVariable Long id, @RequestBody Kitchen kitchen) {
+	private ResponseEntity<Kitchen> update(@PathVariable Long id, @RequestBody Kitchen kitchen) {
 		try {
 			Kitchen kitchenAtualizar = kitchenService.findById(id);
 
@@ -67,7 +67,7 @@ public class KitchenController {
 	}
 
 	@DeleteMapping("{id}")
-	private ResponseEntity<Kitchen> remover(@PathVariable Long id) {
+	private ResponseEntity<Kitchen> delete(@PathVariable Long id) {
 		try {
 			kitchenService.delete(id);
 			return ResponseEntity.noContent().build();
