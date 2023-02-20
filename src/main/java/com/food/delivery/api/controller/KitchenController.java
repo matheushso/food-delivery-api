@@ -53,12 +53,12 @@ public class KitchenController {
 	@PutMapping("/{id}")
 	private ResponseEntity<Kitchen> update(@PathVariable Long id, @RequestBody Kitchen kitchen) {
 		try {
-			Kitchen kitchenAtualizar = kitchenService.findById(id);
+			Kitchen kitchenUpdate = kitchenService.findById(id);
 
-			BeanUtils.copyProperties(kitchen, kitchenAtualizar, "id");
+			BeanUtils.copyProperties(kitchen, kitchenUpdate, "id");
 
-			kitchenAtualizar = kitchenService.save(kitchenAtualizar);
-			return ResponseEntity.ok(kitchenAtualizar);
+			kitchenUpdate = kitchenService.save(kitchenUpdate);
+			return ResponseEntity.ok(kitchenUpdate);
 
 		} catch (Exception e) {
 			return ResponseEntity.notFound().build();
@@ -67,16 +67,16 @@ public class KitchenController {
 	}
 
 	@DeleteMapping("{id}")
-	private ResponseEntity<Kitchen> delete(@PathVariable Long id) {
+	private ResponseEntity<?> delete(@PathVariable Long id) {
 		try {
 			kitchenService.delete(id);
 			return ResponseEntity.noContent().build();
 
 		} catch (EntityNotFoundException e) {
-			return ResponseEntity.notFound().build();
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 
 		} catch (EntityInUseException e) {
-			return ResponseEntity.status(HttpStatus.CONFLICT).build();
+			return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
 		}
 
 	}
