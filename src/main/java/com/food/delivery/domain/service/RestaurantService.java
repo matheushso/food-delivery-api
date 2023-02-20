@@ -45,18 +45,6 @@ public class RestaurantService {
 		}
 	}
 
-	public Restaurant update(Long id, Restaurant restaurant) {
-		Restaurant restaurantUpdate = restaurantRepository.buscar(id);
-
-		if (restaurantUpdate == null) {
-			return restaurantUpdate;
-		}
-
-		restaurant.setId(id);
-
-		return save(restaurant);
-	}
-
 	public void delete(Long id) {
 		Restaurant restaurant = findById(id);
 

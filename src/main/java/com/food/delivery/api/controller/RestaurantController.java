@@ -2,6 +2,7 @@ package com.food.delivery.api.controller;
 
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,22 +49,22 @@ public class RestaurantController {
 			return ResponseEntity.status(HttpStatus.CREATED).body(restaurant);
 
 		} catch (EntityNotFoundException e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 		}
 	}
 
 	@PutMapping("/{id}")
 	private ResponseEntity<?> update(@PathVariable Long id, @RequestBody Restaurant restaurant) {
 		try {
-			Restaurant restaurantUpdated = restaurantService.update(id, restaurant);
-			if (restaurantUpdated != null) {
-				return ResponseEntity.ok(restaurantUpdated);
-			}
+			Restaurant restaurantUpdate = restaurantService.findById(id);
 
-			return ResponseEntity.notFound().build();
+			BeanUtils.copyProperties(restaurant, restaurantUpdate, "id");
+
+			restaurantUpdate = restaurantService.save(restaurantUpdate);
+			return ResponseEntity.ok(restaurantUpdate);
 
 		} catch (EntityNotFoundException e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 		}
 	}
 
