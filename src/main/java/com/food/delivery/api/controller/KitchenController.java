@@ -63,7 +63,6 @@ public class KitchenController {
 		} catch (Exception e) {
 			return ResponseEntity.notFound().build();
 		}
-
 	}
 
 	@DeleteMapping("{id}")
@@ -78,6 +77,5 @@ public class KitchenController {
 		} catch (EntityInUseException e) {
 			return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
 		}
-
 	}
 }
