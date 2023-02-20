@@ -1,4 +1,4 @@
-insert into kitchen (id, name) values(1, 'Tailandasa');
+insert into kitchen (id, name) values(1, 'Tailandesa');
 insert into kitchen (id, name) values(2, 'Indiana');
 
 insert into restaurant (name, freight_rate, kitchen_id) values('Thai Gourmet', 10, 1);
