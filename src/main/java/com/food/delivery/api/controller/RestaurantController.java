@@ -71,10 +71,10 @@ public class RestaurantController {
 	private ResponseEntity<?> delete(@PathVariable Long id) {
 		try {
 			restaurantService.delete(id);
-			return ResponseEntity.ok().build();
+			return ResponseEntity.noContent().build();
 
 		} catch (EntityNotFoundException e) {
-			return ResponseEntity.notFound().build();
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
 		}
 	}
 }
