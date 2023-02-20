@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.food.delivery.domain.exception.EntityInUseException;
 import com.food.delivery.domain.exception.EntityNotFoundException;
 import com.food.delivery.domain.model.Kitchen;
-import com.food.delivery.domain.repository.KitchenRepository;
 import com.food.delivery.domain.service.KitchenService;
 
 @RestController
@@ -27,25 +26,22 @@ import com.food.delivery.domain.service.KitchenService;
 public class KitchenController {
 
 	@Autowired
-	private KitchenRepository kitchenRepository;
-
-	@Autowired
 	private KitchenService kitchenService;
 
 	@GetMapping
-	private List<Kitchen> listar() {
-		return kitchenRepository.listar();
+	private List<Kitchen> findAll() {
+		return kitchenService.findAll();
 	}
 
 	@GetMapping("/{id}")
 	private ResponseEntity<Kitchen> buscar(@PathVariable Long id) {
-		Kitchen kitchen = kitchenRepository.buscar(id);
-
-		if (kitchen != null) {
+		try {
+			Kitchen kitchen = kitchenService.findById(id);
 			return ResponseEntity.ok(kitchen);
-		}
 
-		return ResponseEntity.notFound().build();
+		} catch (EntityNotFoundException e) {
+			return ResponseEntity.notFound().build();
+		}
 	}
 
 	@PostMapping
@@ -56,16 +52,18 @@ public class KitchenController {
 
 	@PutMapping("/{id}")
 	private ResponseEntity<Kitchen> atualizar(@PathVariable Long id, @RequestBody Kitchen kitchen) {
-		Kitchen kitchenAtualizar = kitchenRepository.buscar(id);
+		try {
+			Kitchen kitchenAtualizar = kitchenService.findById(id);
 
-		if (kitchenAtualizar != null) {
 			BeanUtils.copyProperties(kitchen, kitchenAtualizar, "id");
 
 			kitchenAtualizar = kitchenService.save(kitchenAtualizar);
 			return ResponseEntity.ok(kitchenAtualizar);
+
+		} catch (Exception e) {
+			return ResponseEntity.notFound().build();
 		}
 
-		return ResponseEntity.notFound().build();
 	}
 
 	@DeleteMapping("{id}")
