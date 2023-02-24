@@ -18,7 +18,7 @@ public class RestaurantService {
 	private RestaurantRepository restaurantRepository;
 
 	@Autowired
-	KitchenRepository kitchenRepository;
+	private KitchenRepository kitchenRepository;
 
 	public List<Restaurant> findAll() {
 		return restaurantRepository.listar();
@@ -29,9 +29,10 @@ public class RestaurantService {
 
 		if (restaurant == null) {
 			throw new EntityNotFoundException(String.format("No Restaurant with Id %d was found.", id));
-		} else {
-			return restaurant;
+
 		}
+
+		return restaurant;
 	}
 
 	public Restaurant save(Restaurant restaurant) {
@@ -40,9 +41,10 @@ public class RestaurantService {
 
 		if (kitchen == null) {
 			throw new EntityNotFoundException(String.format("No Kitchen with Id %d was found.", kitchenId));
-		} else {
-			return restaurantRepository.salvar(restaurant);
+
 		}
+
+		return restaurantRepository.salvar(restaurant);
 	}
 
 	public void delete(Long id) {
