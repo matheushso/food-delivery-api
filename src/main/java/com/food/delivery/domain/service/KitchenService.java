@@ -27,9 +27,9 @@ public class KitchenService {
 
 		if (kitchen == null) {
 			throw new EntityNotFoundException(String.format("No Kitchen with Id %d was found.", id));
-		} else {
-			return kitchen;
 		}
+
+		return kitchen;
 	}
 
 	public Kitchen save(Kitchen kitchen) {
