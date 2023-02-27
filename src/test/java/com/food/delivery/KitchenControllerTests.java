@@ -62,16 +62,7 @@ public class KitchenControllerTests {
 				.name("Kitchen")
 				.build();
 
-		given()
-			.basePath("/kitchens")
-			.port(port)
-			.body(kitchen)
-			.contentType(ContentType.JSON)
-			.accept(ContentType.JSON)
-		.when()
-			.post()
-		.then()
-			.statusCode(HttpStatus.CREATED.value());
+		createKitchen(kitchen);
 
 		Kitchen kitchenCreated = findById(3);
 
@@ -84,16 +75,7 @@ public class KitchenControllerTests {
 				.name("Kitchen")
 				.build();
 
-		given()
-			.basePath("/kitchens")
-			.port(port)
-			.body(kitchenCreate)
-			.contentType(ContentType.JSON)
-			.accept(ContentType.JSON)
-		.when()
-			.post()
-		.then()
-			.statusCode(HttpStatus.CREATED.value());
+		createKitchen(kitchenCreate);
 
 		Kitchen kitchen = Kitchen.builder()
 				.name("Kitchen update")
@@ -136,18 +118,49 @@ public class KitchenControllerTests {
 	}
 	
 	@Test
-	public void shouldReturnStatus200_WhenDeletedKitchen() {
-		//TODO Fazer demais cenários de Delete
+	public void shouldReturnStatus204_WhenDeletedKitchen() {
+		Kitchen kitchen = Kitchen.builder()
+				.name("Kitchen")
+				.build();
+		
+		createKitchen(kitchen);
+		createKitchen(kitchen);
 		
 		given()
-			.pathParam("id", 3)
+			.pathParam("id", 4)
 			.basePath("/kitchens/{id}")
 			.port(port)
 			.accept(ContentType.JSON)
 		.when()
 			.delete()
 		.then()
-			.statusCode(HttpStatus.OK.value());
+			.statusCode(HttpStatus.NO_CONTENT.value());
+	}
+	
+	@Test
+	public void shouldReturnStatus404_WhenDeletedKitchenNotFound() {
+		given()
+			.pathParam("id", 4)
+			.basePath("/kitchens/{id}")
+			.port(port)
+			.accept(ContentType.JSON)
+		.when()
+			.delete()
+		.then()
+			.statusCode(HttpStatus.NOT_FOUND.value());
+	}
+	
+	@Test
+	public void shouldReturnStatus409_WhenDeletedKitchenIsInUse() {
+		given()
+			.pathParam("id", 1)
+			.basePath("/kitchens/{id}")
+			.port(port)
+			.accept(ContentType.JSON)
+		.when()
+			.delete()
+		.then()
+			.statusCode(HttpStatus.CONFLICT.value());
 	}
 	
 	private Kitchen findById(int id) {
@@ -159,5 +172,18 @@ public class KitchenControllerTests {
 			.when()
 				.get()
 				.as(Kitchen.class);
+	}
+	
+	private void createKitchen(Kitchen kitchen) {
+		given()
+			.basePath("/kitchens")
+			.port(port)
+			.body(kitchen)
+			.contentType(ContentType.JSON)
+			.accept(ContentType.JSON)
+		.when()
+			.post()
+		.then()
+			.statusCode(HttpStatus.CREATED.value());
 	}
 }
