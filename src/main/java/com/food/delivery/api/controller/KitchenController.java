@@ -60,7 +60,7 @@ public class KitchenController {
 			kitchenUpdate = kitchenService.save(kitchenUpdate);
 			return ResponseEntity.ok(kitchenUpdate);
 
-		} catch (Exception e) {
+		} catch (EntityNotFoundException e) {
 			return ResponseEntity.notFound().build();
 		}
 	}
