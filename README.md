@@ -4,6 +4,7 @@
 - Java 11/17 [API Rest]
 - Spring Boot
 - Spring Data JPA
+- Testes integrados
 - Maven
 - MySQL
 - Flyway
