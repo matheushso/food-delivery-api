@@ -124,7 +124,6 @@ public class KitchenControllerTests {
 				.build();
 		
 		createKitchen(kitchen);
-		createKitchen(kitchen);
 		
 		given()
 			.pathParam("id", 4)
