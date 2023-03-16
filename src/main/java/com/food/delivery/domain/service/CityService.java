@@ -32,7 +32,7 @@ public class CityService {
 
 	public City save(City city) {
 		Long stateId = city.getState().getId();
-		State state = stateRepository.buscar(stateId);
+		State state = stateRepository.findById(stateId).orElse(null);
 
 		if (state == null) {
 			throw new EntityNotFoundException(String.format("No State with Id %d was found.", stateId));
