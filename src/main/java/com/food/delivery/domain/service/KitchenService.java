@@ -19,11 +19,11 @@ public class KitchenService {
 	private KitchenRepository kitchenRepository;
 
 	public List<Kitchen> findAll() {
-		return kitchenRepository.listar();
+		return kitchenRepository.findAll();
 	}
 
 	public Kitchen findById(Long id) {
-		Kitchen kitchen = kitchenRepository.buscar(id);
+		Kitchen kitchen = kitchenRepository.findById(id).orElse(null);
 
 		if (kitchen == null) {
 			throw new EntityNotFoundException(String.format("No Kitchen with Id %d was found.", id));
@@ -33,12 +33,12 @@ public class KitchenService {
 	}
 
 	public Kitchen save(Kitchen kitchen) {
-		return kitchenRepository.salvar(kitchen);
+		return kitchenRepository.save(kitchen);
 	}
 
 	public void delete(Long id) {
 		try {
-			kitchenRepository.delete(id);
+			kitchenRepository.deleteById(id);
 
 		} catch (EmptyResultDataAccessException e) {
 			throw new EntityNotFoundException(String.format("No Kitchen with Id %d was found.", id));

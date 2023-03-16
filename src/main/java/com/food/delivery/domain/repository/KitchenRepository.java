@@ -1,19 +1,9 @@
 package com.food.delivery.domain.repository;
 
-import java.util.List;
-
-import org.springframework.stereotype.Component;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.food.delivery.domain.model.Kitchen;
 
-@Component
-public interface KitchenRepository {
+public interface KitchenRepository extends JpaRepository<Kitchen, Long> {
 
-	List<Kitchen> listar();
-
-	Kitchen buscar(Long id);
-
-	Kitchen salvar(Kitchen cozinha);
-
-	void delete(Long id);
 }
