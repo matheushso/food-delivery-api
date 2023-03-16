@@ -19,11 +19,11 @@ public class StateService {
 	private StateRepository stateRepository;
 
 	public List<State> findAll() {
-		return stateRepository.listar();
+		return stateRepository.findAll();
 	}
 
 	public State findById(Long id) {
-		State state = stateRepository.buscar(id);
+		State state = stateRepository.findById(id).orElse(null);
 
 		if (state == null) {
 			throw new EntityNotFoundException(String.format("No State with Id %d was found.", id));
@@ -33,12 +33,12 @@ public class StateService {
 	}
 
 	public State save(State state) {
-		return stateRepository.salvar(state);
+		return stateRepository.save(state);
 	}
 
 	public void delete(Long id) {
 		try {
-			stateRepository.remover(id);
+			stateRepository.deleteById(id);
 
 		} catch (EmptyResultDataAccessException e) {
 			throw new EntityNotFoundException(String.format("No State with Id %d was found.", id));
