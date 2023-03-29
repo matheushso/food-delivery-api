@@ -1,9 +1,14 @@
 package com.food.delivery.domain.model;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,4 +30,8 @@ public class Kitchen {
 	private Long id;
 
 	private String name;
+	
+	@JsonIgnore
+	@OneToMany
+	private List<Restaurant> restaurants;
 }
