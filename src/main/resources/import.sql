@@ -20,3 +20,5 @@ insert into city (name, state_id) values ('Maringá', 1);
 insert into city (name, state_id) values ('Curitiba', 1);
 insert into city (name, state_id) values ('Garulhos', 2);
 insert into city (name, state_id) values ('Campinas', 2);
+
+insert into restaurant_payment_method (restaurant_id, payment_method_id) values (1, 1), (1, 2), (1, 3), (2, 3), (3, 2), (3, 3);
