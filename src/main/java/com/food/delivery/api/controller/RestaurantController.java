@@ -63,7 +63,7 @@ public class RestaurantController {
 		try {
 			Restaurant restaurantUpdate = restaurantService.findById(id);
 
-			BeanUtils.copyProperties(restaurant, restaurantUpdate, "id");
+			BeanUtils.copyProperties(restaurant, restaurantUpdate, "id", "paymentMethods");
 
 			restaurantUpdate = restaurantService.save(restaurantUpdate);
 			return ResponseEntity.ok(restaurantUpdate);
