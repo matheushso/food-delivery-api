@@ -38,6 +38,7 @@ public class RestaurantService {
 	public Restaurant save(Restaurant restaurant) {
 		Long kitchenId = restaurant.getKitchen().getId();
 		Kitchen kitchen = kitchenRepository.findById(kitchenId).orElse(null);
+		restaurant.setKitchen(kitchen);
 
 		if (kitchen == null) {
 			throw new EntityNotFoundException(String.format("No Kitchen with Id %d was found.", kitchenId));
