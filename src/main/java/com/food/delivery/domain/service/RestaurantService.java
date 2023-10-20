@@ -29,7 +29,6 @@ public class RestaurantService {
 
 		if (restaurant == null) {
 			throw new EntityNotFoundException(String.format("No Restaurant with Id %d was found.", id));
-
 		}
 
 		return restaurant;

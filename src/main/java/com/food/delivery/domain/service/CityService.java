@@ -36,7 +36,6 @@ public class CityService {
 
 		if (state == null) {
 			throw new EntityNotFoundException(String.format("No State with Id %d was found.", stateId));
-
 		}
 
 		city.setState(state);
