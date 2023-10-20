@@ -25,5 +25,6 @@ public class Product {
     private Boolean active;
 
     @ManyToOne
+    @JoinColumn(nullable = false)
     private Restaurant restaurant;
 }
