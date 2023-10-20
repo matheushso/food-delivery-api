@@ -49,4 +49,8 @@ public class Restaurant {
 	@ManyToMany
 	@JoinTable(name = "restaurant_payment_method", inverseJoinColumns = @JoinColumn(name = "payment_method_id"))
 	private List<PaymentMethod> paymentMethods;
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "restaurant")
+	private List<Product> products;
 }
