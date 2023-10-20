@@ -42,7 +42,6 @@ public class RestaurantService {
 
 		if (kitchen == null) {
 			throw new EntityNotFoundException(String.format("No Kitchen with Id %d was found.", kitchenId));
-
 		}
 
 		return restaurantRepository.save(restaurant);
