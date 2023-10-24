@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
+
     @Query("select distinct r from Restaurant r join fetch r.kitchen left join fetch r.paymentMethods")
     List<Restaurant> findAll();
 }
