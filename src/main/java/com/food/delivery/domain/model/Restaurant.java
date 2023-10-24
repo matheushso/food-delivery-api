@@ -45,7 +45,6 @@ public class Restaurant {
 	@Column(nullable = false, columnDefinition = "datetime")
 	private LocalDateTime updateDate;
 
-	@JsonIgnore
 	@ManyToMany
 	@JoinTable(name = "restaurant_payment_method", inverseJoinColumns = @JoinColumn(name = "payment_method_id"))
 	private List<PaymentMethod> paymentMethods;
