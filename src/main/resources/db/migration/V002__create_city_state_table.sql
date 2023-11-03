@@ -4,7 +4,7 @@ create table state
     name varchar(80) not null,
 
     primary key (id)
-) engine=InnoDB default charset=utf8;
+) engine=InnoDB default charset=utf8mb4;
 
 create table city
 (
@@ -13,7 +13,7 @@ create table city
     state_id bigint      not null,
 
     primary key (id)
-) engine=InnoDB default charset=utf8;
+) engine=InnoDB default charset=utf8mb4;
 
 alter table city
     add constraint fk_city_state
