@@ -1,3 +1,30 @@
+set foreign_key_checks = 0;
+
+delete from city;
+delete from kitchen;
+delete from state;
+delete from payment_method;
+delete from group_access;
+delete from permission;
+delete from group_access_permission;
+delete from restaurant;
+delete from restaurant_payment_method;
+delete from product;
+delete from user;
+delete from user_group_access;
+
+set foreign_key_checks = 1;
+
+alter table city auto_increment = 1;
+alter table kitchen auto_increment = 1;
+alter table state auto_increment = 1;
+alter table payment_method auto_increment = 1;
+alter table group_access auto_increment = 1;
+alter table permission auto_increment = 1;
+alter table restaurant auto_increment = 1;
+alter table product auto_increment = 1;
+alter table user auto_increment = 1;
+
 insert into kitchen (id, name) values(1, 'Tailandesa');
 insert into kitchen (id, name) values(2, 'Indiana');
 
