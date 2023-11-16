@@ -41,7 +41,7 @@ public class PurchaseOrder {
     private OrderStatus orderStatus = OrderStatus.CREATED;
 
     @ManyToOne
-    @JoinColumn(name = "payment_method_id")
+    @JoinColumn(name = "payment_method_id", nullable = false)
     private PaymentMethod paymentMethod;
 
     @ManyToOne
