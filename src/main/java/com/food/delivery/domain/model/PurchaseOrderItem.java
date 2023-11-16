@@ -25,10 +25,10 @@ public class PurchaseOrderItem {
     private String observation;
 
     @ManyToOne
-    @JoinColumn(name = "purchase_order_id" , nullable = false)
+    @JoinColumn(name = "purchase_order_id", nullable = false)
     private PurchaseOrder purchaseOrder;
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 }
