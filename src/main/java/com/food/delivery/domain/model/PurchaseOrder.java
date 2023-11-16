@@ -45,7 +45,7 @@ public class PurchaseOrder {
     private PaymentMethod paymentMethod;
 
     @ManyToOne
-    @JoinColumn(name = "restaurant_id")
+    @JoinColumn(name = "restaurant_id", nullable = false)
     private Restaurant restaurant;
 
     @ManyToOne
