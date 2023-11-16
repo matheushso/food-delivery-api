@@ -53,5 +53,5 @@ public class PurchaseOrder {
     private User user;
 
     @OneToMany(mappedBy = "purchaseOrder", cascade = CascadeType.PERSIST)
-    private List<PurchaseOrderItem> purchaseOrderItem;
+    private List<PurchaseOrderItem> purchaseOrderItems;
 }
