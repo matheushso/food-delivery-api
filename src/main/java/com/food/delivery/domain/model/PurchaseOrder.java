@@ -49,7 +49,7 @@ public class PurchaseOrder {
     private Restaurant restaurant;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @OneToMany(mappedBy = "purchaseOrder", cascade = CascadeType.PERSIST)
