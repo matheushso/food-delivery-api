@@ -1,12 +1,10 @@
 package com.food.delivery.api.controller;
 
-import com.food.delivery.domain.exception.EntityNotFoundException;
 import com.food.delivery.domain.model.Kitchen;
 import com.food.delivery.domain.service.KitchenService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,18 +33,12 @@ public class KitchenController {
     }
 
     @PutMapping("/{id}")
-    private ResponseEntity<Kitchen> update(@PathVariable Long id, @RequestBody Kitchen kitchen) {
-        try {
-            Kitchen kitchenUpdate = kitchenService.findById(id);
+    private Kitchen update(@PathVariable Long id, @RequestBody Kitchen kitchen) {
+        Kitchen kitchenUpdate = kitchenService.findById(id);
 
-            BeanUtils.copyProperties(kitchen, kitchenUpdate, "id");
+        BeanUtils.copyProperties(kitchen, kitchenUpdate, "id");
 
-            kitchenUpdate = kitchenService.save(kitchenUpdate);
-            return ResponseEntity.ok(kitchenUpdate);
-
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+        return kitchenService.save(kitchenUpdate);
     }
 
     @DeleteMapping("{id}")
