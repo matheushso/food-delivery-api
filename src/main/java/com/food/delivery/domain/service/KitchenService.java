@@ -15,6 +15,10 @@ import com.food.delivery.domain.repository.KitchenRepository;
 @Service
 public class KitchenService {
 
+	private static final String MSG_KITCHEN_NOT_FOUND = "No Kitchen with Id %d was found.";
+
+	private static final String MSG_KITCHEN_IN_USE = "Kitchen of id %d has restaurants. It can not be removed.";
+
 	@Autowired
 	private KitchenRepository kitchenRepository;
 
@@ -23,7 +27,7 @@ public class KitchenService {
 	}
 
 	public Kitchen findById(Long id) {
-		return kitchenRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(String.format("No Kitchen with Id %d was found.", id)));
+		return kitchenRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(String.format(MSG_KITCHEN_NOT_FOUND, id)));
 	}
 
 	public Kitchen save(Kitchen kitchen) {
@@ -35,11 +39,11 @@ public class KitchenService {
 			kitchenRepository.deleteById(id);
 
 		} catch (EmptyResultDataAccessException e) {
-			throw new EntityNotFoundException(String.format("No Kitchen with Id %d was found.", id));
+			throw new EntityNotFoundException(String.format(MSG_KITCHEN_NOT_FOUND, id));
 
 		} catch (DataIntegrityViolationException e) {
 			throw new EntityInUseException(
-					String.format("Kitchen of id %d has restaurants. It can not be removed.", id));
+					String.format(MSG_KITCHEN_IN_USE, id));
 		}
 	}
 
