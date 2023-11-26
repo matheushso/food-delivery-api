@@ -32,6 +32,6 @@ public class Kitchen {
 	private String name;
 	
 	@JsonIgnore
-	@OneToMany
+	@OneToMany(mappedBy = "kitchen")
 	private List<Restaurant> restaurants;
 }
