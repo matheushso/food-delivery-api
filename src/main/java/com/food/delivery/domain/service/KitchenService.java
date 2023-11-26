@@ -23,13 +23,7 @@ public class KitchenService {
 	}
 
 	public Kitchen findById(Long id) {
-		Kitchen kitchen = kitchenRepository.findById(id).orElse(null);
-
-		if (kitchen == null) {
-			throw new EntityNotFoundException(String.format("No Kitchen with Id %d was found.", id));
-		}
-
-		return kitchen;
+		return kitchenRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(String.format("No Kitchen with Id %d was found.", id)));
 	}
 
 	public Kitchen save(Kitchen kitchen) {
