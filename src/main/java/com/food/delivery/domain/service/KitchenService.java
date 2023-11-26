@@ -27,7 +27,8 @@ public class KitchenService {
 	}
 
 	public Kitchen findById(Long id) {
-		return kitchenRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(String.format(MSG_KITCHEN_NOT_FOUND, id)));
+		return kitchenRepository.findById(id)
+				.orElseThrow(() -> new EntityNotFoundException(String.format(MSG_KITCHEN_NOT_FOUND, id)));
 	}
 
 	public Kitchen save(Kitchen kitchen) {
