@@ -46,5 +46,4 @@ public class KitchenService {
 					String.format(MSG_KITCHEN_IN_USE, id));
 		}
 	}
-
 }
