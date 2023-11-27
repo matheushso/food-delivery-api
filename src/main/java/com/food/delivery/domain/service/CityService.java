@@ -5,7 +5,6 @@ import com.food.delivery.domain.exception.EntityNotFoundException;
 import com.food.delivery.domain.model.City;
 import com.food.delivery.domain.model.State;
 import com.food.delivery.domain.repository.CityRepository;
-import com.food.delivery.domain.repository.StateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -18,15 +17,13 @@ public class CityService {
 
     private static final String MSG_CITY_NOT_FOUND = "No City with Id %d was found.";
 
-    private static final String MSG_STATE_NOT_FOUND = "No State with Id %d was found.";
-
     private static final String MSG_CITY_IN_USE = "City id %d is used and cannot be removed.";
 
     @Autowired
     private CityRepository cityRepository;
 
     @Autowired
-    private StateRepository stateRepository;
+    private StateService stateService;
 
     public List<City> findAll() {
         return cityRepository.findAll();
@@ -39,10 +36,9 @@ public class CityService {
 
     public City save(City city) {
         Long stateId = city.getState().getId();
-        State state = stateRepository.findById(stateId)
-                .orElseThrow(() -> new EntityNotFoundException(String.format(MSG_STATE_NOT_FOUND, stateId)));
-
+        State state = stateService.findById(stateId);
         city.setState(state);
+
         return cityRepository.save(city);
     }
 
