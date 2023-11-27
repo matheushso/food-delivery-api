@@ -1,13 +1,11 @@
 package com.food.delivery.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.food.delivery.domain.exception.EntityNotFoundException;
 import com.food.delivery.domain.model.Product;
 import com.food.delivery.domain.service.ProductService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,49 +26,27 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    private ResponseEntity<Product> findById(@PathVariable Long id) {
-        try {
-            Product product = productService.findById(id);
-            return ResponseEntity.ok(product);
-
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+    private Product findById(@PathVariable Long id) {
+        return productService.findById(id);
     }
 
     @PostMapping
-    private ResponseEntity<?> save(@RequestBody Product product) {
-        try {
-            product = productService.save(product);
-            return ResponseEntity.status(HttpStatus.CREATED).body(product);
-
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
+    private Product save(@RequestBody Product product) {
+        return productService.save(product);
     }
 
     @PutMapping("/{id}")
-    private ResponseEntity<?> update(@PathVariable Long id, @RequestBody Product product) {
-        try {
-            Product productUpdate = productService.findById(id);
+    private Product update(@PathVariable Long id, @RequestBody Product product) {
+        Product productUpdate = productService.findById(id);
 
-            BeanUtils.copyProperties(product, productUpdate, "id");
+        BeanUtils.copyProperties(product, productUpdate, "id");
 
-            productUpdate = productService.save(productUpdate);
-            return ResponseEntity.ok(productUpdate);
-
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
+        return productService.save(productUpdate);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<?> partialUpdate(@PathVariable Long id, @RequestBody Map<String, Object> fields) {
+    public Product partialUpdate(@PathVariable Long id, @RequestBody Map<String, Object> fields) {
         Product productActual = productService.findById(id);
-
-        if (productActual == null) {
-            return ResponseEntity.notFound().build();
-        }
 
         merge(fields, productActual);
 
@@ -78,14 +54,9 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    private ResponseEntity<?> delete(@PathVariable Long id) {
-        try {
-            productService.delete(id);
-            return ResponseEntity.noContent().build();
-
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    private void delete(@PathVariable Long id) {
+        productService.delete(id);
     }
 
     private void merge(Map<String, Object> sourceFields, Product destinationProduct) {

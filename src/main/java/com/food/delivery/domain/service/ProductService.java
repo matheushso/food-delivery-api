@@ -13,6 +13,10 @@ import java.util.List;
 @Service
 public class ProductService {
 
+	private static final String MSG_PRODUCT_NOT_FOUND = "No Product with Id %d was found.";
+
+	private static final String MSG_RESTAURANT_IN_USE = "No Restaurant with Id %d was found.";
+
 	@Autowired
 	private ProductRepository productRepository;
 
@@ -24,23 +28,13 @@ public class ProductService {
 	}
 
 	public Product findById(Long id) {
-		Product product = productRepository.findById(id).orElse(null);
-
-		if (product == null) {
-			throw new EntityNotFoundException(String.format("No Product with Id %d was found.", id));
-
-		}
-
-		return product;
+		return productRepository.findById(id)
+				.orElseThrow(() -> new EntityNotFoundException(String.format(MSG_PRODUCT_NOT_FOUND, id)));
 	}
 
 	public Product save(Product product) {
 		Long restaurantId = product.getRestaurant().getId();
-		Restaurant restaurant = restaurantRepository.findById(restaurantId).orElse(null);
-
-		if (restaurant == null) {
-			throw new EntityNotFoundException(String.format("No Restaurant with Id %d was found.", restaurantId));
-		}
+		Restaurant restaurant = restaurantRepository.findById(restaurantId).orElseThrow(() -> new EntityNotFoundException(String.format(MSG_RESTAURANT_IN_USE, restaurantId)));
 
 		product.setRestaurant(restaurant);
 		return productRepository.save(product);
@@ -48,10 +42,6 @@ public class ProductService {
 
 	public void delete(Long id) {
 		Product product = findById(id);
-
-		if (product == null) {
-			throw new EntityNotFoundException(String.format("No Product with Id %d was found.", id));
-		}
 
 		productRepository.delete(product);
 	}
