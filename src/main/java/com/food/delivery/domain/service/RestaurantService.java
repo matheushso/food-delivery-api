@@ -13,6 +13,8 @@ import com.food.delivery.domain.repository.RestaurantRepository;
 @Service
 public class RestaurantService {
 
+	private static final String MSG_RESTAURANT_NOT_FOUND = "No Restaurant with Id %d was found.";
+
 	@Autowired
 	private RestaurantRepository restaurantRepository;
 
@@ -25,7 +27,7 @@ public class RestaurantService {
 
 	public Restaurant findById(Long id) {
 		return restaurantRepository.findById(id)
-				.orElseThrow(() -> new EntityNotFoundException(String.format("No Restaurant with Id %d was found.", id)));
+				.orElseThrow(() -> new EntityNotFoundException(String.format(MSG_RESTAURANT_NOT_FOUND, id)));
 	}
 
 	public Restaurant save(Restaurant restaurant) {

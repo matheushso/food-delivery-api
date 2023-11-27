@@ -1,51 +1,48 @@
 package com.food.delivery.domain.service;
 
-import java.util.List;
-
+import com.food.delivery.domain.exception.EntityInUseException;
+import com.food.delivery.domain.exception.EntityNotFoundException;
+import com.food.delivery.domain.model.State;
+import com.food.delivery.domain.repository.StateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
-import com.food.delivery.domain.exception.EntityInUseException;
-import com.food.delivery.domain.exception.EntityNotFoundException;
-import com.food.delivery.domain.model.State;
-import com.food.delivery.domain.repository.StateRepository;
+import java.util.List;
 
 @Service
 public class StateService {
 
-	@Autowired
-	private StateRepository stateRepository;
+    private static final String MSG_STATE_NOT_FOUND = "No State with Id %d was found.";
 
-	public List<State> findAll() {
-		return stateRepository.findAll();
-	}
+    private static final String MSG_STATE_IN_USE = "State of id %d has cities. It can not be removed.";
 
-	public State findById(Long id) {
-		State state = stateRepository.findById(id).orElse(null);
+    @Autowired
+    private StateRepository stateRepository;
 
-		if (state == null) {
-			throw new EntityNotFoundException(String.format("No State with Id %d was found.", id));
-		}
+    public List<State> findAll() {
+        return stateRepository.findAll();
+    }
 
-		return state;
-	}
+    public State findById(Long id) {
+        return stateRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("No State with Id %d was found.", id)));
+    }
 
-	public State save(State state) {
-		return stateRepository.save(state);
-	}
+    public State save(State state) {
+        return stateRepository.save(state);
+    }
 
-	public void delete(Long id) {
-		try {
-			stateRepository.deleteById(id);
+    public void delete(Long id) {
+        try {
+            stateRepository.deleteById(id);
 
-		} catch (EmptyResultDataAccessException e) {
-			throw new EntityNotFoundException(String.format("No State with Id %d was found.", id));
+        } catch (EmptyResultDataAccessException e) {
+            throw new EntityNotFoundException(String.format(MSG_STATE_NOT_FOUND, id));
 
-		} catch (DataIntegrityViolationException e) {
-			throw new EntityInUseException(String.format("State of id %d has cities. It can not be removed.", id));
-		}
-
-	}
+        } catch (DataIntegrityViolationException e) {
+            throw new EntityInUseException(String.format(MSG_STATE_IN_USE, id));
+        }
+    }
 }
