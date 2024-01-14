@@ -1,6 +1,6 @@
 package com.food.delivery.domain.service;
 
-import com.food.delivery.domain.exception.EntityNotFoundException;
+import com.food.delivery.domain.exception.ProductNotFoundException;
 import com.food.delivery.domain.model.Product;
 import com.food.delivery.domain.model.Restaurant;
 import com.food.delivery.domain.repository.ProductRepository;
@@ -11,8 +11,6 @@ import java.util.List;
 
 @Service
 public class ProductService {
-
-    private static final String MSG_PRODUCT_NOT_FOUND = "No Product with Id %d was found.";
 
     @Autowired
     private ProductRepository productRepository;
@@ -26,7 +24,7 @@ public class ProductService {
 
     public Product findById(Long id) {
         return productRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(String.format(MSG_PRODUCT_NOT_FOUND, id)));
+                .orElseThrow(() -> new ProductNotFoundException(id));
     }
 
     public Product save(Product product) {
@@ -39,7 +37,6 @@ public class ProductService {
 
     public void delete(Long id) {
         Product product = findById(id);
-
         productRepository.delete(product);
     }
 }
