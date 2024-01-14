@@ -42,7 +42,7 @@ public class StateController {
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     private void delete(@PathVariable Long id) {
         stateService.delete(id);
     }
