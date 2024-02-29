@@ -15,19 +15,21 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<?> getEntityNotFoundException(EntityNotFoundException ex, WebRequest request) {
-        return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(),
+    public ResponseEntity<?> handleEntityNotFoundException(EntityNotFoundException ex, WebRequest request) {
+        Problem problem = createProblemBuilder(HttpStatus.NOT_FOUND, ProblemType.ENTITY_NOT_FOUND, ex.getMessage()).build();
+
+        return handleExceptionInternal(ex, problem, new HttpHeaders(),
                 HttpStatus.NOT_FOUND, request);
     }
 
     @ExceptionHandler(EntityInUseException.class)
-    public ResponseEntity<?> getEntityInUseException(EntityInUseException ex, WebRequest request) {
+    public ResponseEntity<?> handleEntityInUseException(EntityInUseException ex, WebRequest request) {
         return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(),
                 HttpStatus.CONFLICT, request);
     }
 
     @ExceptionHandler(BusinessException.class)
-    public ResponseEntity<?> getBusinessException(BusinessException ex, WebRequest request) {
+    public ResponseEntity<?> handleBusinessException(BusinessException ex, WebRequest request) {
         return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(),
                 HttpStatus.BAD_REQUEST, request);
     }
@@ -35,11 +37,25 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
         if (body == null) {
-            body = new ErrorMessage(status.getReasonPhrase());
+            body = Problem.builder()
+                    .title(status.getReasonPhrase())
+                    .status(status.value())
+                    .build();
         } else if (body instanceof String) {
-            body = new ErrorMessage((String) body);
+            body = Problem.builder()
+                    .title((String) body)
+                    .status(status.value())
+                    .build();
         }
 
         return super.handleExceptionInternal(ex, body, headers, status, request);
+    }
+
+    private Problem.ProblemBuilder createProblemBuilder(HttpStatus status, ProblemType problemType, String detail) {
+        return Problem.builder()
+                .status(status.value())
+                .type(problemType.getUri())
+                .title(problemType.getTitle())
+                .detail(detail);
     }
 }
