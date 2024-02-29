@@ -24,13 +24,17 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(EntityInUseException.class)
     public ResponseEntity<?> handleEntityInUseException(EntityInUseException ex, WebRequest request) {
-        return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(),
+        Problem problem = createProblemBuilder(HttpStatus.CONFLICT, ProblemType.ENTITY_IN_USE, ex.getMessage()).build();
+
+        return handleExceptionInternal(ex, problem, new HttpHeaders(),
                 HttpStatus.CONFLICT, request);
     }
 
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<?> handleBusinessException(BusinessException ex, WebRequest request) {
-        return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(),
+        Problem problem = createProblemBuilder(HttpStatus.BAD_REQUEST, ProblemType.BUSINESS_ERROR, ex.getMessage()).build();
+
+        return handleExceptionInternal(ex, problem, new HttpHeaders(),
                 HttpStatus.BAD_REQUEST, request);
     }
 
