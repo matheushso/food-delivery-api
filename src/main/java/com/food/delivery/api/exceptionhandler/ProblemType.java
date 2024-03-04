@@ -7,7 +7,8 @@ public enum ProblemType {
 
     ENTITY_NOT_FOUND("/entity-not-found", "Entity not found"),
     ENTITY_IN_USE("/entity-in-use", "Entity in use"),
-    BUSINESS_ERROR("/business-error", "Business rule violation");
+    BUSINESS_ERROR("/business-error", "Business rule violation"),
+    INCOMPREHENSIBLE_MESSAGE("/incomprehensible-message", "Incomprehensible Message");
 
     private final String title;
     private final String uri;
