@@ -51,6 +51,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         }
 
         String detail = "The request body is invalid. Check syntax error";
+
         Problem problem = createProblemBuilder(status, ProblemType.INCOMPREHENSIBLE_MESSAGE, detail).build();
 
         return handleExceptionInternal(ex, problem, headers, status, request);
@@ -60,52 +61,59 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         String detail = String.format("The resource '%s' with HTTP method '%s' that you tried to access does not exist.",
                 ex.getRequestURL(), ex.getHttpMethod());
-        Problem problem = createProblemBuilder(HttpStatus.NOT_FOUND, ProblemType.RESOURCE_NOT_FOUND, detail).build();
+
+        Problem problem = createProblemBuilder(status, ProblemType.RESOURCE_NOT_FOUND, detail).build();
 
         return handleExceptionInternal(ex, problem, headers, status, request);
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<Object> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex, WebRequest request) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
         String detail = String.format("The URL parameter '%s' was assigned the value '%s', " +
                         "which is of an invalid type. Correct and enter a value compatible with the type '%s'.",
                 ex.getName(), ex.getValue(), Objects.requireNonNull(ex.getRequiredType()).getSimpleName());
-        Problem problem = createProblemBuilder(HttpStatus.BAD_REQUEST, ProblemType.INVALID_PARAMETER, detail).build();
 
-        return handleExceptionInternal(ex, problem, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+        Problem problem = createProblemBuilder(status, ProblemType.INVALID_PARAMETER, detail).build();
+
+        return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleUncaught(Exception ex, WebRequest request) {
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
         String detail = "An unexpected internal error has occurred in the system. Try again, and if the problem persists, contact your system administrator.";
-        Problem problem = createProblemBuilder(HttpStatus.INTERNAL_SERVER_ERROR, ProblemType.SYSTEM_ERROR, detail).build();
 
-        return handleExceptionInternal(ex, problem, new HttpHeaders(),
-                HttpStatus.INTERNAL_SERVER_ERROR, request);
+        Problem problem = createProblemBuilder(status, ProblemType.SYSTEM_ERROR, detail).build();
+
+        return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<Object> handleEntityNotFoundException(EntityNotFoundException ex, WebRequest request) {
-        Problem problem = createProblemBuilder(HttpStatus.NOT_FOUND, ProblemType.RESOURCE_NOT_FOUND, ex.getMessage()).build();
+        HttpStatus status = HttpStatus.NOT_FOUND;
 
-        return handleExceptionInternal(ex, problem, new HttpHeaders(),
-                HttpStatus.NOT_FOUND, request);
+        Problem problem = createProblemBuilder(status, ProblemType.RESOURCE_NOT_FOUND, ex.getMessage()).build();
+
+        return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
     }
 
     @ExceptionHandler(EntityInUseException.class)
     public ResponseEntity<Object> handleEntityInUseException(EntityInUseException ex, WebRequest request) {
-        Problem problem = createProblemBuilder(HttpStatus.CONFLICT, ProblemType.ENTITY_IN_USE, ex.getMessage()).build();
+        HttpStatus status = HttpStatus.CONFLICT;
 
-        return handleExceptionInternal(ex, problem, new HttpHeaders(),
-                HttpStatus.CONFLICT, request);
+        Problem problem = createProblemBuilder(status, ProblemType.ENTITY_IN_USE, ex.getMessage()).build();
+
+        return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
     }
 
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<Object> handleBusinessException(BusinessException ex, WebRequest request) {
-        Problem problem = createProblemBuilder(HttpStatus.BAD_REQUEST, ProblemType.BUSINESS_ERROR, ex.getMessage()).build();
+        HttpStatus status = HttpStatus.BAD_REQUEST;
 
-        return handleExceptionInternal(ex, problem, new HttpHeaders(),
-                HttpStatus.BAD_REQUEST, request);
+        Problem problem = createProblemBuilder(status, ProblemType.BUSINESS_ERROR, ex.getMessage()).build();
+
+        return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
     }
 
     private ResponseEntity<Object> checkRootCause(Throwable rootCause, HttpHeaders headers, HttpStatus status, WebRequest request) {
