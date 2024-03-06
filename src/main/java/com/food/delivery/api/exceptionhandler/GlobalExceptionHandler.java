@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.List;
@@ -55,6 +56,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, problem, headers, status, request);
     }
 
+    @Override
+    protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        String detail = String.format("The resource '%s' with HTTP method '%s' that you tried to access does not exist.",
+                ex.getRequestURL(), ex.getHttpMethod());
+        Problem problem = createProblemBuilder(HttpStatus.NOT_FOUND, ProblemType.RESOURCE_NOT_FOUND, detail).build();
+
+        return handleExceptionInternal(ex, problem, headers, status, request);
+    }
+
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<Object> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex, WebRequest request) {
         String detail = String.format("The URL parameter '%s' was assigned the value '%s', " +
@@ -67,7 +77,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<Object> handleEntityNotFoundException(EntityNotFoundException ex, WebRequest request) {
-        Problem problem = createProblemBuilder(HttpStatus.NOT_FOUND, ProblemType.ENTITY_NOT_FOUND, ex.getMessage()).build();
+        Problem problem = createProblemBuilder(HttpStatus.NOT_FOUND, ProblemType.RESOURCE_NOT_FOUND, ex.getMessage()).build();
 
         return handleExceptionInternal(ex, problem, new HttpHeaders(),
                 HttpStatus.NOT_FOUND, request);
