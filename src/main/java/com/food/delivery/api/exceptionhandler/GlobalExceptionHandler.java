@@ -75,6 +75,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, problem, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Object> handleUncaught(Exception ex, WebRequest request) {
+        String detail = "An unexpected internal error has occurred in the system. Try again, and if the problem persists, contact your system administrator.";
+        Problem problem = createProblemBuilder(HttpStatus.INTERNAL_SERVER_ERROR, ProblemType.SYSTEM_ERROR, detail).build();
+
+        return handleExceptionInternal(ex, problem, new HttpHeaders(),
+                HttpStatus.INTERNAL_SERVER_ERROR, request);
+    }
+
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<Object> handleEntityNotFoundException(EntityNotFoundException ex, WebRequest request) {
         Problem problem = createProblemBuilder(HttpStatus.NOT_FOUND, ProblemType.RESOURCE_NOT_FOUND, ex.getMessage()).build();
