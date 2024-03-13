@@ -24,6 +24,8 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
+    public static final String GENERIC_ERROR_MESSAGE = "An unexpected internal error has occurred in the system. Try again, and if the problem persists, contact your system administrator.";
+
     @Override
     protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
         if (body == null) {
@@ -82,9 +84,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleUncaught(Exception ex, WebRequest request) {
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
-        String detail = "An unexpected internal error has occurred in the system. Try again, and if the problem persists, contact your system administrator.";
 
-        Problem problem = createProblemBuilder(status, ProblemType.SYSTEM_ERROR, detail).build();
+        Problem problem = createProblemBuilder(status, ProblemType.SYSTEM_ERROR, GENERIC_ERROR_MESSAGE).build();
 
         return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
     }
@@ -101,8 +102,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(EntityInUseException.class)
     public ResponseEntity<Object> handleEntityInUseException(EntityInUseException ex, WebRequest request) {
         HttpStatus status = HttpStatus.CONFLICT;
+        String detail = ex.getMessage();
 
-        Problem problem = createProblemBuilder(status, ProblemType.ENTITY_IN_USE, ex.getMessage()).build();
+        Problem problem = createProblemBuilder(status, ProblemType.ENTITY_IN_USE, detail)
+                .userMessage(detail)
+                .build();
 
         return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
     }
@@ -131,7 +135,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         String detail = String.format("Property '%s' has been assigned the value '%s', " +
                         "which is of an invalid type. Correct and enter a value compatible with type %s.",
                 path, ex.getValue(), ex.getTargetType().getSimpleName());
-        Problem problem = createProblemBuilder(status, ProblemType.INCOMPREHENSIBLE_MESSAGE, detail).build();
+        Problem problem = createProblemBuilder(status, ProblemType.INCOMPREHENSIBLE_MESSAGE, detail)
+                .userMessage(GENERIC_ERROR_MESSAGE)
+                .build();
 
         return handleExceptionInternal(ex, problem, headers, status, request);
     }
@@ -141,7 +147,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         String detail = String.format("Property '%s' not exist. " +
                 "Please correct or remove this property and try again.", path);
-        Problem problem = createProblemBuilder(status, ProblemType.INCOMPREHENSIBLE_MESSAGE, detail).build();
+        Problem problem = createProblemBuilder(status, ProblemType.INCOMPREHENSIBLE_MESSAGE, detail)
+                .userMessage(GENERIC_ERROR_MESSAGE)
+                .build();
 
         return handleExceptionInternal(ex, problem, headers, status, request);
     }
