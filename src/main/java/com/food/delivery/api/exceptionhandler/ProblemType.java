@@ -10,7 +10,8 @@ public enum ProblemType {
     BUSINESS_ERROR("/business-error", "Business rule violation"),
     INCOMPREHENSIBLE_MESSAGE("/incomprehensible-message", "Incomprehensible Message"),
     INVALID_PARAMETER("/invalid-parameter", "Invalid Parameter"),
-    SYSTEM_ERROR("/system-error", "System Error");
+    SYSTEM_ERROR("/system-error", "System Error"),
+    INVALID_DATA("/invalid-data", "Invalid Data");
 
     private final String title;
     private final String uri;
