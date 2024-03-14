@@ -17,6 +17,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -54,7 +55,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         String detail = "The request body is invalid. Check syntax error";
 
-        Problem problem = createProblemBuilder(status, ProblemType.INCOMPREHENSIBLE_MESSAGE, detail).build();
+        Problem problem = createProblemBuilder(status, ProblemType.INCOMPREHENSIBLE_MESSAGE, detail)
+                .userMessage(GENERIC_ERROR_MESSAGE)
+                .build();
 
         return handleExceptionInternal(ex, problem, headers, status, request);
     }
@@ -64,7 +67,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         String detail = String.format("The resource '%s' with HTTP method '%s' that you tried to access does not exist.",
                 ex.getRequestURL(), ex.getHttpMethod());
 
-        Problem problem = createProblemBuilder(status, ProblemType.RESOURCE_NOT_FOUND, detail).build();
+        Problem problem = createProblemBuilder(status, ProblemType.RESOURCE_NOT_FOUND, detail)
+                .userMessage(GENERIC_ERROR_MESSAGE)
+                .build();
 
         return handleExceptionInternal(ex, problem, headers, status, request);
     }
@@ -76,7 +81,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                         "which is of an invalid type. Correct and enter a value compatible with the type '%s'.",
                 ex.getName(), ex.getValue(), Objects.requireNonNull(ex.getRequiredType()).getSimpleName());
 
-        Problem problem = createProblemBuilder(status, ProblemType.INVALID_PARAMETER, detail).build();
+        Problem problem = createProblemBuilder(status, ProblemType.INVALID_PARAMETER, detail)
+                .userMessage(GENERIC_ERROR_MESSAGE)
+                .build();
 
         return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
     }
@@ -85,7 +92,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleUncaught(Exception ex, WebRequest request) {
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 
-        Problem problem = createProblemBuilder(status, ProblemType.SYSTEM_ERROR, GENERIC_ERROR_MESSAGE).build();
+        Problem problem = createProblemBuilder(status, ProblemType.SYSTEM_ERROR, GENERIC_ERROR_MESSAGE)
+                .userMessage(GENERIC_ERROR_MESSAGE)
+                .build();
 
         return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
     }
@@ -93,8 +102,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<Object> handleEntityNotFoundException(EntityNotFoundException ex, WebRequest request) {
         HttpStatus status = HttpStatus.NOT_FOUND;
+        String detail = ex.getMessage();
 
-        Problem problem = createProblemBuilder(status, ProblemType.RESOURCE_NOT_FOUND, ex.getMessage()).build();
+        Problem problem = createProblemBuilder(status, ProblemType.RESOURCE_NOT_FOUND, detail)
+                .userMessage(detail)
+                .build();
 
         return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
     }
@@ -114,8 +126,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<Object> handleBusinessException(BusinessException ex, WebRequest request) {
         HttpStatus status = HttpStatus.BAD_REQUEST;
+        String detail = ex.getMessage();
 
-        Problem problem = createProblemBuilder(status, ProblemType.BUSINESS_ERROR, ex.getMessage()).build();
+        Problem problem = createProblemBuilder(status, ProblemType.BUSINESS_ERROR, detail)
+                .userMessage(detail)
+                .build();
 
         return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
     }
@@ -135,6 +150,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         String detail = String.format("Property '%s' has been assigned the value '%s', " +
                         "which is of an invalid type. Correct and enter a value compatible with type %s.",
                 path, ex.getValue(), ex.getTargetType().getSimpleName());
+
         Problem problem = createProblemBuilder(status, ProblemType.INCOMPREHENSIBLE_MESSAGE, detail)
                 .userMessage(GENERIC_ERROR_MESSAGE)
                 .build();
@@ -159,7 +175,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .status(status.value())
                 .type(problemType.getUri())
                 .title(problemType.getTitle())
-                .detail(detail);
+                .detail(detail)
+                .timestamp(LocalDateTime.now());
     }
 
     private static String joinPath(List<JsonMappingException.Reference> references) {
