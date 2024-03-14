@@ -33,11 +33,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
             body = Problem.builder()
                     .title(status.getReasonPhrase())
                     .status(status.value())
+                    .userMessage(GENERIC_ERROR_MESSAGE)
+                    .timestamp(LocalDateTime.now())
                     .build();
         } else if (body instanceof String) {
             body = Problem.builder()
                     .title((String) body)
                     .status(status.value())
+                    .userMessage(GENERIC_ERROR_MESSAGE)
+                    .timestamp(LocalDateTime.now())
                     .build();
         }
 
