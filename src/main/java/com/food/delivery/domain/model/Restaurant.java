@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -22,7 +23,8 @@ public class Restaurant {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
+	@NotNull
 	private String name;
 	
 	private BigDecimal freightRate;
