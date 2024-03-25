@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Builder
@@ -19,4 +20,12 @@ public class Problem {
     private String userMessage;
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss.SSS")
     private LocalDateTime timestamp;
+    private List<Field> fields;
+
+    @Getter
+    @Builder
+    public static class Field {
+        private String name;
+        private String userMessage;
+    }
 }

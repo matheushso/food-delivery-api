@@ -10,6 +10,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -82,9 +83,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         String detail = "One or more fields are invalid. Fill in correctly and try again.";
+        BindingResult bindingResult = ex.getBindingResult();
+
+        List<Problem.Field> problemFields = bindingResult.getFieldErrors().stream().map(fieldError -> Problem.Field.builder()
+                .name(fieldError.getField())
+                .userMessage(fieldError.getDefaultMessage())
+                .build()).toList();
 
         Problem problem = createProblemBuilder(status, ProblemType.INVALID_DATA, detail)
                 .userMessage(detail)
+                .fields(problemFields)
                 .build();
 
         return handleExceptionInternal(ex, problem, headers, status, request);
