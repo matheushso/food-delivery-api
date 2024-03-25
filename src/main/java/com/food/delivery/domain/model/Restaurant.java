@@ -1,6 +1,7 @@
 package com.food.delivery.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.food.delivery.Groups;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
@@ -11,6 +12,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
+import javax.validation.groups.ConvertGroup;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,6 +34,7 @@ public class Restaurant {
     private BigDecimal freightRate;
 
     @Valid
+    @ConvertGroup(to = Groups.KitchenId.class)
     @NotNull
     @ManyToOne
     @JoinColumn(nullable = false)
