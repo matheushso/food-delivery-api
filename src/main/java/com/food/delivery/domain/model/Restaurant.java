@@ -1,58 +1,62 @@
 package com.food.delivery.domain.model;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.List;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+
+import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 public class Restaurant {
 
-	@EqualsAndHashCode.Include
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @EqualsAndHashCode.Include
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@NotNull
-	private String name;
-	
-	private BigDecimal freightRate;
+    @NotBlank
+    private String name;
 
-	@ManyToOne
-	@JoinColumn(nullable = false)
-	private Kitchen kitchen;
+    @PositiveOrZero
+    private BigDecimal freightRate;
 
-	@JsonIgnore
-	@Embedded
-	private Address address;
+    @Valid
+    @NotNull
+    @ManyToOne
+    @JoinColumn(nullable = false)
+    private Kitchen kitchen;
 
-	@JsonIgnore
-	@CreationTimestamp
-	@Column(nullable = false, columnDefinition = "datetime")
-	private LocalDateTime creationDate;
+    @JsonIgnore
+    @Embedded
+    private Address address;
 
-	@JsonIgnore
-	@UpdateTimestamp
-	@Column(nullable = false, columnDefinition = "datetime")
-	private LocalDateTime updateDate;
+    @JsonIgnore
+    @CreationTimestamp
+    @Column(nullable = false, columnDefinition = "datetime")
+    private LocalDateTime creationDate;
 
-	@JsonIgnore
-	@ManyToMany
-	@JoinTable(name = "restaurant_payment_method", inverseJoinColumns = @JoinColumn(name = "payment_method_id"))
-	private List<PaymentMethod> paymentMethods;
+    @JsonIgnore
+    @UpdateTimestamp
+    @Column(nullable = false, columnDefinition = "datetime")
+    private LocalDateTime updateDate;
 
-	@JsonIgnore
-	@OneToMany(mappedBy = "restaurant")
-	private List<Product> products;
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(name = "restaurant_payment_method", inverseJoinColumns = @JoinColumn(name = "payment_method_id"))
+    private List<PaymentMethod> paymentMethods;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "restaurant")
+    private List<Product> products;
 }
